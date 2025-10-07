@@ -1,0 +1,11 @@
+Resources:
+  AWSLambda:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: demo                 # corrected
+      Runtime: nodejs18.x
+      Handler: index.handler
+      Role: arn:aws:iam::<account-id>:role/<lambda-execution-role>  # required
+      Code:
+        S3Bucket: demo-1234r2           # corrected
+        S3Key: nodejs.zip                # corrected
