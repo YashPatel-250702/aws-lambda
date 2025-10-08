@@ -1,11 +1,31 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Create Lambda execution role and Lambda function
+
 Resources:
-  AWSLambda:
+  LambdaExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: lambda-yash-role
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+
+  DemoLambdaFunction:
     Type: AWS::Lambda::Function
     Properties:
-      FunctionName: demo                 # corrected
+      FunctionName: demo
       Runtime: nodejs18.x
       Handler: index.handler
-      Role: arn:aws:iam::<account-id>:role/<lambda-execution-role>  # required
+      Role: 
+        Fn::GetAtt:
+          - LambdaExecutionRole
+          - Arn
       Code:
-        S3Bucket: demo-1234r2           # corrected
-        S3Key: nodejs.zip                # corrected
+        S3Bucket: demo-1234r2
+        S3Key: nodejs.zip
